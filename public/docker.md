@@ -7,8 +7,6 @@
 
 Dockerの特徴はホストOSのカーネルを使用してコンテナを動かすところにあります。
 
-
-
 従来、使われていたホスト型仮想化と比較すると図のように異なります。
 
 図のように、ホスト型仮想化はホストOSとは別に、仮想化環境にゲストOSを用意して動作させています。
@@ -30,11 +28,7 @@ Dockerの特徴はホストOSのカーネルを使用してコンテナを動か
 
 # Dockerを動かすために知っておきたいこと
 
-ここからはdockerを使ってコンテナを起動させるために知っておきたいことをご紹介します！
-
-## Dockerコンテナ
-
-Dockerコンテナは
+ここからはdockerを使用するために知っておきたいことをご紹介します！
 
 
 ## Dockerイメージ
@@ -52,9 +46,20 @@ Dockerイメージとはコンテナを動かすためのパッケージよう�
 
 ## Dockerfile
 
+Dockerイメージを作るための指示書になります。
+アプリケーションを動かすために必要な環境を記載しているため、
+別のPCからも同じ環境を再現できるのです。
+
 ```Dockerfile
 # ベースイメージとしてPython 3.8を使用
 FROM python:3.8-slim
+
+# 作業ディレクトリを設定。コンテナの中でどこで作業する指示する
+WORKDIR /app
+
+# 自分のPCにあるファイルをコンテナの中にもコピーします。
+# 今回の例だとローカルのhogeファイルを/appにコピーしています
+COPY /hoge
 
 # Pythonスクリプトを直接Dockerfile内に書き込む
 RUN echo 'print("Hello, World from Docker!")' > /hello.py
@@ -64,8 +69,6 @@ CMD ["python", "/hello.py"]
 ```
 
 
-
-
 さて実際にdockerを使ってコンテナを起動させる流れを見ていきたい
 
 
@@ -73,16 +76,35 @@ CMD ["python", "/hello.py"]
 
 1. Dockerfileを作成
 2. Dockerfileを基にイメージを作成（build）される
-3. Dockerイメージを実行（run）してコンテナが作成される
-4. コンテナを起動
+3. Dockerイメージを実行（run）してコンテナが起動する
 
+
+## Dockerfileを作成
+
+```Dockerfile
+# ベースイメージとしてPython 3.8を使用
+FROM python:3.8-slim
+
+# 作業ディレクトリを設定。コンテナの中でどこで作業する指示する
+WORKDIR /app
+
+# 自分のPCにあるファイルをコンテナの中にもコピーします。
+# 今回の例だとローカルのhogeファイルを/appにコピーしています
+COPY /hoge
+
+# Pythonスクリプトを直接Dockerfile内に書き込む
+RUN echo 'print("Hello, World from Docker!")' > /hello.py
+
+# コンテナ起動時に実行するコマンドを指定
+CMD ["python", "/hello.py"]
+```
 
 ## コンテナビルド
 
-docker-compose build
-
-イメージのビルドを行い、それを実行する前の段階での作業です。コンテナを起動する前に、イメージを作成する必要があります。
+docker run hello_world
 
 ## コンテナ起動
 
-docker-compose up
+docker run hello_world 
+
+ビルドされたイメージを使って実際にコンテナを起動します。イメージがすでにビルドされている場合、これは単にコンテナを起動するだけです。

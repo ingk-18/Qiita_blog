@@ -180,7 +180,7 @@ Payment クラスを抽象クラスとして定義し、
 
 ```php
 // 規定クラス
-class Animal
+abstract class Animal
 {
     public function walk()
     {
@@ -213,10 +213,55 @@ class Fish extends Animal
 上記の例では派生クラスである Fish は規定クラスである Animal クラスを継承しています。
 
 ただし、Fish の walk() では例外をスローしているので、
-
 規定クラスで定義した walk() で期待する値を返していないません。
-
 規定クラスのオブジェクトを置換できないことになります。
+
+### GOOD
+
+```php
+// 動物規定クラス
+abstract class Animal
+{
+    public function eat(){}
+}
+
+// 歩く動物動物クラス
+abstract class WalkingAnimal extends Animal
+{
+    public function walk(){}
+}
+
+// 泳ぐ動物規定クラス
+abstract class SwimmingAnimal extends Animal
+{
+    public function swim(){}
+}
+
+
+// 派生クラス
+class Dog extends WalkingAnimal
+{
+    public function walk()
+    {
+        echo "Dog is walking";
+    }
+}
+
+
+// 派生クラス
+class Fish extends SwimmingAnimal
+{
+    public function swim()
+    {
+        echo "Fish is swimming";
+    }
+}
+```
+
+**歩く、泳ぐ**をそれぞれ規定クラスに分割して、
+派生クラスの犬と魚は必要な規定クラスのみ継承することで、
+それぞれ規定クラスの振る舞いを壊すことなく置換できる状態となっています。
+
 
 # まとめ🖊️
 

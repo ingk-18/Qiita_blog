@@ -1,3 +1,10 @@
+# シェルの確認
+
+# ps
+  PID TTY          TIME CMD
+   26 pts/1    00:00:00 sh
+   32 pts/1    00:00:00 ps
+
 # ディレクトリ構成
 
 /home/ingk
